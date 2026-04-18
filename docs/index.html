@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="ArGue: Attribute-Guided Prompt Tuning for Vision-Language Models">
+  <meta name="description" content="ArGue addresses distribution shift in soft prompt tuning by aligning Vision-Language models with LLM-generated visual attributes, introducing attribute sampling and negative prompting to suppress spurious correlations.">
+  <meta name="keywords" content="Vision-Language Models, Prompt Tuning, CLIP, Few-Shot Learning, Out-of-Distribution, Spurious Correlations, Visual Attributes">
+  <meta name="author" content="Xinyu Tian, Shu Zou, Zhaoyuan Yang, Jing Zhang">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>ArGue: Attribute-Guided Prompt Tuning for Vision-Language Models</title>
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap&family=Google+Sans" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "ArGue: Attribute-Guided Prompt Tuning for Vision-Language Models",
+    "description": "ArGue addresses distribution shift in soft prompt tuning by aligning Vision-Language models with LLM-generated visual attributes and negative prompting to suppress spurious correlations.",
+    "author": [
+      {"@type": "Person", "name": "Xinyu Tian", "affiliation": {"@type": "Organization", "name": "Australian National University"}},
+      {"@type": "Person", "name": "Shu Zou", "affiliation": {"@type": "Organization", "name": "Australian National University"}},
+      {"@type": "Person", "name": "Zhaoyuan Yang", "affiliation": {"@type": "Organization", "name": "GE Research"}},
+      {"@type": "Person", "name": "Jing Zhang", "affiliation": {"@type": "Organization", "name": "Australian National University"}}
+    ],
+    "datePublished": "2024-02-27",
+    "publisher": {"@type": "Organization", "name": "CVPR 2024"},
+    "keywords": ["Vision-Language Models", "Prompt Tuning", "CLIP", "Visual Attributes", "Spurious Correlations", "Few-Shot Learning"]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-2 publication-title">ArGue: Attribute-Guided Prompt Tuning for Vision-Language Models</h1>
+            <p class="is-size-4" style="color: red; font-weight: bold; font-size: 1.35rem !important;">CVPR 2024</p>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://xytian1008.github.io/" target="_blank">Xinyu Tian</a>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=0-peT50AAAAJ&hl=en" target="_blank">Shu Zou</a>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=qxa04lIAAAAJ&hl=en" target="_blank">Zhaoyuan Yang<sup>*</sup></a>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=Qa1DMv8AAAAJ&hl=en" target="_blank">Jing Zhang</a></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Australian National University &nbsp;&nbsp;&nbsp;&nbsp;<sup>*</sup>GE Research</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2311.16494" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2311.16494" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://github.com/xytian1008/ArGue" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Paper abstract -->
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Although soft prompt tuning is effective in efficiently adapting Vision-Language (V&L) models for downstream tasks, it shows limitations in dealing with distribution shifts. We address this issue with <b>Attribute-Guided Prompt Tuning (ArGue)</b>, making three key contributions. (1) In contrast to the conventional approach of directly appending soft prompts preceding class names, we align the model with primitive visual attributes generated by Large Language Models (LLMs). We posit that a model's ability to express high confidence in these attributes signifies its capacity to discern the correct class rationales. (2) We introduce <b>attribute sampling</b> to eliminate disadvantageous attributes, thus only semantically meaningful attributes are preserved. (3) We propose <b>negative prompting</b>, explicitly enumerating class-agnostic attributes to activate spurious correlations and encourage the model to generate highly orthogonal probability distributions in relation to these negative features. In experiments, our method significantly outperforms current state-of-the-art prompt tuning methods on both novel class prediction and out-of-distribution generalization tasks.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br><br>
+        <h2 class="title is-23">Motivation: Spurious Correlations in Prompt Tuning</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/intuition_figure.png" alt="Negative Prompting Illustration" />
+        </div>
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            Standard soft prompt tuning methods learn shortcuts tied to spurious image features (e.g., background) rather than class-specific semantics, causing degraded generalization to novel classes and out-of-distribution data. For instance, when presented with a negative prompt such as <i>the background of a cat</i>, vanilla CLIP yields biased predictions by activating background spurious correlations. ArGue suppresses these shortcuts by training with visual attributes and enforcing uniform predictions under negative prompts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br>
+        <h2 class="title is-23">Method: Attribute-Guided Prompt Tuning</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/pipeline.png" alt="ArGue Pipeline" />
+        </div>
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            The ArGue pipeline consists of three stages: (a) LLM attribute generation, (b) attribute sampling, and (c) attribute-guided soft prompt optimization with negative prompting.
+          </p>
+        </div>
+        <div class="content has-text-justified">
+          <ol>
+            <li>
+              <b>Attribute-Guided Prompting</b>: Instead of <code>[soft tokens] + [class name]</code>, we use <code>[soft tokens] + [class name] + [attribute]</code>. Attributes are generated by GPT-3 (J=15 per class) and logits are averaged across attributes at inference.
+            </li>
+            <li>
+              <b>Attribute Sampling</b>: Attributes are clustered in CLIP's text feature space, and the most image-relevant one per cluster is kept — filtering out non-visual (e.g., <i>edible</i>) and domain-irrelevant descriptions. N=3 attributes per class are retained for training.
+            </li>
+            <li>
+              <b>Prompt Regularization</b>: Soft prompt features are pulled toward frozen text features from multiple natural language templates via a contrastive loss, preventing overfitting to training classes.
+            </li>
+            <li>
+              <b>Negative Prompting (ArGue-N)</b>: The model is trained to predict uniformly under a background-activating prompt (e.g., <i>the background of a {class}</i>), suppressing spurious correlations without per-class annotation.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br>
+        <h2 class="title is-23">Attribute Sampling</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/attr_select.png" alt="Attribute Sampling" />
+        </div>
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            LLM-generated attributes vary in visual relevance. We cluster the attribute pool semantically and select the most image-aligned attribute per cluster, retaining only 20% of attributes while improving accuracy. This removes non-visual terms and domain-irrelevant descriptions (e.g., color attributes for grayscale sketch images).
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br>
+        <h2 class="title is-23">Novel Class Prediction</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/novel_class.png" alt="Novel Class Prediction Results" />
+        </div>
+        <div class="content has-text-justified">
+          <ul>
+            <li>
+              <b>ArGue-N outperforms LASP by +1.70%</b> in average harmonic mean across 11 datasets, setting a new state of the art.
+            </li>
+            <li>
+              <b>First prompt tuning method to surpass zero-shot CLIP</b> on novel class accuracy in 10 out of 11 benchmarks.
+            </li>
+            <li>
+              Largest gains on fine-grained datasets: <b>+4.55%</b> on FGVCAircraft and <b>+3.98%</b> on EuroSAT.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br>
+        <h2 class="title is-23">Out-of-Distribution Generalization</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/ood.png" alt="OOD Generalization Results" />
+        </div>
+        <div class="content has-text-justified">
+          <ul>
+            <li>
+              <b>ArGue-N consistently outperforms all baselines</b> across all four OOD variants: ImageNetV2, ImageNet-Sketch, ImageNet-A, and ImageNet-R.
+            </li>
+            <li>
+              Negative prompting suppresses background shortcuts that standard prompt tuning amplifies, with the largest gains on datasets where backgrounds are absent (e.g., ImageNet-Sketch).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <br><br>
+        <h2 class="title is-23">Grad-CAM Visualization</h2>
+        <br>
+        <div class="item is-vcentered">
+          <img src="static/figures/gradcam.png" alt="Grad-CAM Visualization" />
+        </div>
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            ArGue-N precisely localizes the visual attributes mentioned in the prompt (e.g., <i>long tail</i>, <i>small paw</i>), while CLIP and CoOp activate large background regions. Under negative prompts, the model correctly suppresses background activations rather than biasing toward any class.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!--BibTex citation -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <div class="bibtex-header">
+      <h2 class="title">BibTeX</h2>
+      <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+        <i class="fas fa-copy"></i>
+        <span class="copy-text">Copy</span>
+      </button>
+    </div>
+    <pre id="bibtex-code"><code>@inproceedings{tian2024argue,
+  title={Argue: Attribute-guided prompt tuning for vision-language models},
+  author={Tian, Xinyu and Zou, Shu and Yang, Zhaoyuan and Zhang, Jing},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={28578--28587},
+  year={2024}
+}</code></pre>
+  </div>
+</section>
+<!--End BibTex citation -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</main>
+</body>
+</html>

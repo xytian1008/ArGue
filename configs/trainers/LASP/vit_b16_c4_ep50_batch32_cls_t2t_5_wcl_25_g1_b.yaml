@@ -1,0 +1,77 @@
+DATALOADER:
+  TRAIN_X:
+    BATCH_SIZE: 32
+  TEST:
+    BATCH_SIZE: 32
+  NUM_WORKERS: 8
+
+INPUT:
+  SIZE: (224, 224)
+  INTERPOLATION: "bicubic"
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  TRANSFORMS: ["random_resized_crop", "random_flip", "normalize"]
+
+OPTIM:
+  NAME: "sgd"
+  LR: 0.032 # 0.002
+  MAX_EPOCH: 50
+  LR_SCHEDULER: "cosine"
+  WARMUP_EPOCH: 5
+  WARMUP_TYPE: "constant"
+  WARMUP_CONS_LR: 1e-5
+  #WEIGHT_DECAY: 0.01
+
+TRAIN:
+  PRINT_FREQ: 20
+
+MODEL:
+  BACKBONE:
+    NAME: "ViT-B/16"
+
+TRAINER:
+  LASP:
+    ENABLE: True
+    ENABLE_CORRECTION: True
+    FINETUNE_VIT_LN: True
+    N_CTX: 4
+    CTX_INIT: "a photo of a"
+    LASP_PROMPTS: [
+       "a photo of a {}, a type of flower.",
+       "a photo of a person doing {}.",
+       "a centered satellite photo of {}.",
+       "a photo of a {}, a type of aircraft.",
+       "{} texture.",
+       "itap of a {}.",
+       "a bad photo of the {}.",
+       "a origami {}.",
+       "a photo of the large {}.",
+       "a {} in a video game.",
+       "art of the {}.",
+       "a photo of the small {}.",
+       "a photo of a {}.",
+       "a photo of many {}.",
+       "a photo of the hard to see {}.",
+       "a low resolution photo of the {}.",
+       "a rendering of a {}.",
+       "a bad photo of the {}.",
+       "a cropped photo of the {}.",
+       "a pixelated photo of the {}.",
+       "a bright photo of the {}.",
+       "a cropped photo of a {}.",
+       "a photo of the {}.",
+       "a good photo of the {}.",
+       "a rendering of the {}.",
+       "a close-up photo of the {}.",
+       "a low resolution photo of a {}.",
+       "a rendition of the {}.",
+       "a photo of the clean {}.",
+       "a photo of a large {}.",
+       "a blurry photo of a {}.",
+       "a pixelated photo of a {}.",
+       "itap of the {}.",
+       "a jpeg corrupted photo of the {}.",
+       "a good photo of a {}.",
+     ]
+    PREC: "amp"
+    LASP_LOSS_WEIGHT: 10.0

@@ -1,0 +1,64 @@
+DATASET:
+  NAME: "EuroSAT"
+  ATTR: [
+    [
+      "Annual Crop Land which are planted in rows or fields with regular geometric patterns",
+      "Annual Crop Land which is a network of canals and irrigation ditches",
+      "Annual Crop Land which tends to exhibit golden or yellow color"
+    ], # Annual Crop Land
+    [
+      "Forest which appear as areas with a continuous cover of tree foliage",
+      "Forest which often display a range of shades of green",
+      "Forest which contain individual trees or tree clumps"
+    ], # Forest
+    [
+      "Herbaceous Vegetation which has a variety of grass species",
+      "Herbaceous Vegetation which exhibits various green color",
+      "Herbaceous Vegetation which has soft, non-woody stems"
+    ], # Herbaceous Vegetation
+    [
+      "Highway or Road which are typically linear features that extend across the landscape",
+      "Highway or Road which exhibit elongated deep colors across the land",
+      "Highway or Road which can be straight or gently curved"
+    ], # Highway or Road
+    [
+      "Industrial Buildings which have a group of buildings",
+      "Industrial Buildings which typically have apparant roof",
+      "Industrial Buildings which has nearby infrastructure features like roads",
+    ], # Industrial Building
+    [
+      "Pasture Land which appears as relatively uniform, green or light green areas",
+      "Pasture Land which has grazing animals such as cattle, sheep, or horses",
+      "Pasture Land where fencing can be visible as linear features, such as straight or curved lines or grids"
+    ], # Pasture Land
+    [
+      "Permanent Crop Land which often features regular rows or patterns of plants",
+      "Permanent Crop Land which often exhibits golden or yellow color",
+      "Permanent Crop Land which irrigation systems, such as irrigation ditches, canals, sprinkler systems, or drip lines"
+    ], # Permanent Crop
+    [
+      "Residential Buildings which has groups of buildings",
+      "Residential Buildings which has streets or road connecting",
+      "Residential Buildings which has yards, gardens, and backyards"
+    ], # Residential Buildings
+    [
+      "River which appear as elongated, meandering bodies of water",
+      "River where the water typically appears as shades of blue or dark gray",
+      "River which has the banks of a river, known as riverbanks or river shores"
+    ], # River
+    [
+      "Sea or Lake which is pure shallow or deep blue",
+      "Sea or Lake which exhibits consistent color with no edge",
+      "Sea or Lake which has the effects of ocean currents and tides"
+    ], # Sea or Lake
+  ]
+  BIAS: [['a background of Annual Crop Land'],
+ ['a background of Forest'],
+ ['a background of Herbaceous Vegetation Land'],
+ ['a background of Highway or Road'],
+ ['a background of Industrial Buildings'],
+ ['a background of Pasture Land'],
+ ['a background of Permanent Crop Land'],
+ ['a background of Residential Buildings'],
+ ['a background of River'],
+ ['a background of Sea or Lake']]

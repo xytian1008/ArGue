@@ -1,0 +1,6 @@
+ftfy
+regex
+tqdm
+gdown
+git+https://github.com/KaiyangZhou/Dassl.pytorch.git
+openai
